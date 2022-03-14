@@ -4,6 +4,7 @@
   "description": "project 1 API",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "server": "nodemon index.js"
   },
   "author": "Mai Viet Cuong",
