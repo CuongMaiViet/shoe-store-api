@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.use('/api/3dmodel', require('./routes/3DModelRouter'))
+app.use('/api/3dmodel', require('./api/3DModelRouter'))
 
 const URI = process.env.MONGO_URL
 mongoose.connect(URI, {
