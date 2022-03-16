@@ -85,7 +85,7 @@ const uploadMiddleware = (req, res, next) => {
     });
 };
 
-router.get("/", async (req, res) => {
+router.get("/3dmodel", async (req, res) => {
     try {
         res.json({
             status: 200,
@@ -97,7 +97,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.post('/upload/', uploadMiddleware, async (req, res) => {
+router.post('/3dmodel/', uploadMiddleware, async (req, res) => {
     // get the .file property from req that was added by the upload middleware
     const { file } = req;
     // and the id of that new image file
@@ -106,14 +106,14 @@ router.post('/upload/', uploadMiddleware, async (req, res) => {
     // set this and the multer file size limit to whatever fits your project
     if (file.size > 100000000) {
         // if the file is too large, delete it and send an error
-        deleteImage(id);
+        deleteImage(id, res);
         return res.status(400).json({ msg: 'file may not exceed 100mb' });
     }
     console.log('uploaded file: ', file);
     return res.json({ file_id: file.id });
 });
 
-const deleteImage = (id) => {
+const deleteImage = (id, res) => {
     if (!id || id === 'undefined') return res.status(400).json({ msg: 'no image id' });
     const _id = new mongoose.Types.ObjectId(id);
     gfs.delete(_id, (err) => {
@@ -121,11 +121,16 @@ const deleteImage = (id) => {
     });
 };
 
+router.delete('/3dmodel/:id', async ({ params: { id } }, res) => {
+    deleteImage(id, res)
+    return res.status(200).json({ msg: "Delete model successfully." })
+})
+
 // this route will be accessed by any img tags on the front end which have
 // src tags like
 // <img src="/api/image/123456789" alt="example"/>
 // <img src={`/api/image/${user.profilePic}`} alt="example"/>
-router.get('/:id', ({ params: { id } }, res) => {
+router.get('/3dmodel/:id', ({ params: { id } }, res) => {
     // if no id return error
     if (!id || id === 'undefined') return res.status(400).json({ msg: 'no file id' });
     // if there is an id string, cast it to mongoose's objectId type
