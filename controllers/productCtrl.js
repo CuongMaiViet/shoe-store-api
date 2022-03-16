@@ -1,12 +1,22 @@
+const APIfeatures = require('../lib/APIfeatures')
 const Products = require('../models/productModel')
 
 const productCtrl = {
     getAllProducts: async (req, res) => {
         try {
-            const products = await Products.find()
+            const features = new APIfeatures(Products.find(), req.query)
+                .sort().paginate().search().filter()
+
+            const result = await Promise.allSettled([
+                features.query,
+                Products.countDocuments()
+            ])
+
+            const products = result[0].status === 'fulfilled' ? result[0].value : []
+            const size = result[1].status === 'fulfilled' ? result[1].value : 0
 
             return res.status(200).json({
-                size: products.length,
+                total: size,
                 data: products
             })
         } catch (error) {

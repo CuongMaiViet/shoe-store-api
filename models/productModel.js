@@ -32,4 +32,11 @@ const ProductSchema = new mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model("Products", ProductSchema)
+ProductSchema.index({ title: 'text', category: 'text' })
+
+
+const Products = mongoose.model("Products", ProductSchema)
+
+Products.createIndexes({ title: 'text', category: 'text' })
+
+module.exports = Products
