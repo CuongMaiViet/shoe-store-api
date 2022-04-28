@@ -1,9 +1,6 @@
-const productRoute = require('./productRouter')
-const modelRoute = require('./3DModelRouter')
+const userRoute = require("./userRoute");
+const packageRoute = require("./packageRoute");
 
-const routes = [
-    productRoute,
-    modelRoute
-]
+const routes = [userRoute, packageRoute];
 
-module.exports = routes
+module.exports = routes;

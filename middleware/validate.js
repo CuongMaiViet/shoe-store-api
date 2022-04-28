@@ -1,19 +1,20 @@
-
-const checkProductData = async (req, res, next) => {
-    const { title, price, description, category, image } = req.body
-    const errors = []
+const validate = {
+  register: async (req, res, next) => {
+    const { email, password, firstName, lastName, phone } = req.body;
+    const errors = [];
 
     for (const key in req.body) {
-        if (!req.body[key]) {
-            errors.push(`Please add product's ${key}.`)
-        }
+      if (!req.body[key]) {
+        errors.push(`Xin quý khách vui lòng điền ${key}.`);
+      }
     }
 
     if (errors.length > 0) {
-        return res.status(401).json({ msg: errors })
+      return res.status(401).json({ msg: errors });
     }
 
-    next()
-}
+    next();
+  },
+};
 
-module.exports = checkProductData
+module.exports = validate;
